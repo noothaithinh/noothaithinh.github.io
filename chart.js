@@ -50,7 +50,7 @@ itemTemplateMap.add("buttons", $(
   {
     itemTemplate: $(
       go.Panel, "Auto",
-      $(go.TextBlock, new go.Binding("text", ""), {margin: 5, font: "Normal small-caps bold 17px sans-serif", stroke: "#2196f3"})
+      $(go.TextBlock, new go.Binding("text", "", (text) => text.toUpperCase()), {margin: 5, font: "Normal bold 12px sans-serif", stroke: "#2196f3"})
     )
   }
 ))
@@ -106,14 +106,15 @@ myDiagram.linkTemplate =$(go.Link,
   $(go.Shape),
   $(go.Shape, { toArrow: "Standard" }),
   $(go.Panel, "Auto",  // this whole Panel is a link label
-    {segmentIndex: -1},
+    {segmentIndex: -1, visible: false},
     $(go.Shape, "Rectangle", 
       { fill: "lightyellow", stroke: "lightgray" },
       new go.Binding("fill", "type", (type) => type === "upload" ? "lightblue" : "lightyellow")
     ),
     $(go.TextBlock, { margin: 5 },
       new go.Binding("text", "text"),
-    )
+    ),
+    new go.Binding("visible", "text", text => !!text)
   ),
   {
     toolTip:  // define a tooltip for each node that displays the color as text
@@ -125,7 +126,7 @@ myDiagram.linkTemplate =$(go.Link,
 );
 
 function load() {
-  myDiagram.model = go.GraphLinksModel.fromJson(document.getElementById("mySavedModel").value);
+  myDiagram.model = go.GraphLinksModel.fromJson(editor.getValue());
 }
 // print the diagram by opening a new window holding SVG images of the diagram contents for each page
 function printDiagram() {
