@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width" />
     <title>Flow Chat</title>
     <script src="go.js"></script>
+    <script src="BalloonLink.js"></script>
     <style>
           #editor {
         position: absolute;
@@ -19,6 +20,7 @@
     <button onclick="printDiagram()">Print Diagram Using SVG</button>
     <div id="editor">{
   "nodeDataArray": [
+    { "key": "A comment", "text": "comment\nabout Hello", "category": "Comment" },
     {
       "key": "start",
       "category": "start"
@@ -366,6 +368,7 @@
     }
   ],
   "linkDataArray": [
+    { "from": "A comment", "to": "Hello", "category": "Comment" },
     {
       "from": "start",
       "to": "Hello",

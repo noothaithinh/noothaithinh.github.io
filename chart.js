@@ -12,8 +12,8 @@ const myDiagram = $(go.Diagram, "myDiagramDiv",
 
 const itemTemplateMap = new go.Map();
 itemTemplateMap.add("text", $(
-  go.Panel, "Horizontal", {width: 250},
-  $(go.TextBlock, {margin: 5},
+  go.Panel, "Vertical", {width: 250},
+  $(go.TextBlock, {margin: 5, width: 240},
     new go.Binding("text", "text"),
     new go.Binding("stroke", "color"),
     new go.Binding("font", "font"),
@@ -86,6 +86,14 @@ myDiagram.nodeTemplate = $(
   }
 );
 
+myDiagram.nodeTemplateMap.add("Comment",
+$(go.Node,  // this needs to act as a rectangular shape for BalloonLink,
+  { background: "transparent" },  // which can be accomplished by setting the background.
+  $(go.TextBlock,
+    { stroke: "brown", margin: 3 },
+    new go.Binding("text"))
+));
+
 myDiagram.nodeTemplateMap.add("start", $(
   go.Node, "Vertical",
   $(go.Panel, "Auto",
@@ -124,6 +132,14 @@ myDiagram.linkTemplate =$(go.Link,
       )  // end of Adornment
   }
 );
+
+myDiagram.linkTemplateMap.add("Comment",
+// if the BalloonLink class has been loaded from the Extensions directory, use it
+$((typeof BalloonLink === "function" ? BalloonLink : go.Link),
+  $(go.Shape,  // the Shape.geometry will be computed to surround the comment node and
+    // point all the way to the commented node
+    { stroke: "brown", strokeWidth: 1, fill: "lightyellow" })
+));
 
 function load() {
   myDiagram.model = go.GraphLinksModel.fromJson(editor.getValue());
